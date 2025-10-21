@@ -27,7 +27,7 @@ class RecipeManager: ObservableObject {
               ],
             imageURL:"https://cdn.dummyjson.com/recipe-images/1.webp"
         ), Recipe(
-            title: "🥗 Caesar Salad",
+            title: "Caesar Salad",
             description: "Fresh lettuce with classic Caesar dressing.",
             ingredients: [
                 "Quinoa, cooked",

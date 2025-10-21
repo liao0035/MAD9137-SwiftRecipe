@@ -30,9 +30,13 @@ struct RecipeItemView: View {
                     .font(.title)
                     
                 
-                Text("⭐️ \(String(format: "%.1f", recipe.rating)) / 5.0")
-                    .font(.subheadline)
-                    .foregroundColor(.gray)
+                HStack(spacing: 4) {
+                    Image(systemName: "star.fill")
+                        .foregroundColor(.yellow)
+                    Text(String(format: "%.1f / 5.0", recipe.rating))
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                }
 
                 
             }
