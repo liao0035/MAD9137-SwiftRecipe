@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct RemiSwiftRecipeApp: App {
+    @StateObject private var recipeManager = RecipeManager()
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(recipeManager)
         }
     }
 }
