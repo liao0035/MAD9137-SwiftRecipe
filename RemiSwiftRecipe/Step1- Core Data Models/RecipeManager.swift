@@ -14,9 +14,11 @@ class RecipeManager: ObservableObject {
     @Published var recipes: [Recipe] = [
         Recipe(
             title:"Quick and Easy Pizza Dough",
+            imageURL:"https://cdn.dummyjson.com/recipe-images/1.webp",
+//            imageURL:"",
+            rating: 5.0,
             description: "An amazing recipe for a quick pizza dough",
             ingredients: ["Pizza dough", "Tomato sauce", "Fresh mozzarella cheese", "Fresh basil leaves", "Olive oil","Salt and pepper to taste"],
-            rating: 5.0,
             steps: [
                 "Preheat the oven to 475°F (245°C).",
                 "Roll out the pizza dough and spread tomato sauce evenly.",
@@ -25,9 +27,12 @@ class RecipeManager: ObservableObject {
                 "Bake in the preheated oven for 12-15 minutes or until the crust is golden brown.",
                 "Slice and serve hot."
               ],
-            imageURL:"https://cdn.dummyjson.com/recipe-images/1.webp"
+            
         ), Recipe(
             title: "Caesar Salad",
+//            imageURL:"https://cdn.dummyjson.com/recipe-images/6.webp",
+            imageURL:"",
+            rating: 4.5,
             description: "Fresh lettuce with classic Caesar dressing.",
             ingredients: [
                 "Quinoa, cooked",
@@ -39,19 +44,19 @@ class RecipeManager: ObservableObject {
                 "Lemon vinaigrette dressing",
                 "Salt and pepper to taste"
               ],
-            rating: 4.5,
+            
             steps: [
                 "In a large bowl, combine cooked quinoa, diced avocado, halved cherry tomatoes, diced cucumber, diced red bell pepper, and crumbled feta cheese.",
                 "Drizzle with lemon vinaigrette dressing and toss to combine.",
                 "Season with salt and pepper to taste.",
                 "Chill in the refrigerator before serving."
               ],
-            imageURL:"https://cdn.dummyjson.com/recipe-images/6.webp"
+            
         ),
     ]
     
-    func addRecipe(title:String, description:String, ingredients:[String],rating:Double, steps:[String],imgageURL:String){
-        let new = Recipe(title: title, description: description, ingredients: ingredients, rating: rating, steps: steps,imageURL: imgageURL)
+    func addRecipe(title:String,imageURL:String,rating:Double, description:String, ingredients:[String], steps:[String],){
+        let new = Recipe(title: title,imageURL: imageURL,rating: rating, description: description, ingredients: ingredients,steps: steps)
         recipes.append(new)
     }
     func deleteRecipe(_ recipe:Recipe){

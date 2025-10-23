@@ -6,59 +6,62 @@
 //
 
 import SwiftUI
+
 struct RecipeItemView: View {
     let recipe: Recipe
     var body: some View {
-        
+
         VStack {
-            AsyncImage(url: URL(string: recipe.imageURL)){ img in
+            AsyncImage(url: URL(string: recipe.imageURL)) { img in
                 img
                     .resizable()
                     .scaledToFit()
-                    .cornerRadius(16)
-                
+                    .clipShape(
+                        .rect(topLeadingRadius: 16, topTrailingRadius: 16)
+                    )
+
             } placeholder: {
-                Rectangle()
-                    .frame(width: 200, height: 200)
-                    .foregroundColor(.gray.opacity(0.2))
-                    .cornerRadius(16)
+                ZStack {
+                    Rectangle()
+                        .aspectRatio(4 / 3, contentMode: .fit)
+                        .foregroundColor(.gray.opacity(0.2))
+                        .clipShape(
+                            .rect(topLeadingRadius: 16, topTrailingRadius: 16)
+                        )
+
+                    Text("No image")
+                        .font(.headline)
+                        .foregroundColor(.secondary)
+                }
             }
-            
-            VStack(alignment:.leading){
-                
+
+            VStack {
                 Text(recipe.title)
                     .font(.title)
-                    
-                
-                HStack(spacing: 4) {
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                HStack {
                     Image(systemName: "star.fill")
                         .foregroundColor(.yellow)
                     Text(String(format: "%.1f / 5.0", recipe.rating))
                         .font(.subheadline)
                         .foregroundColor(.gray)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-                
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.vertical, 16)
+            .padding()
 
-            
-
-            
-            
         }
-        .padding()
         .overlay(
-            RoundedRectangle(cornerRadius: 16)
-                .stroke(Color.gray, lineWidth: 2)
-     )
-        .padding(.vertical, 8)
-        .padding(.horizontal, 16)
-        
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(Color.gray, lineWidth: 3)
+        )
+        .padding(12)
+
     }
 }
-
 
 #Preview {
     let manager = RecipeManager()
@@ -70,4 +73,3 @@ struct RecipeItemView: View {
         }
     }
 }
-

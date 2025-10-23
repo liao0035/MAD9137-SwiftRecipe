@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct RecipeInfo: View {
-    let title: String
+//    let title: String
     let ingredients: [String]
     let steps: [String]
     let description: String
@@ -17,18 +17,22 @@ struct RecipeInfo: View {
     
     var body: some View {
         VStack(alignment: .leading){
-            Text(title)
-                .font(.title)
-                .fontWeight(.bold)
-                .padding(.bottom, 12)
             
+            Text("Description:")
+                .font(.headline)
+            
+            Text(description)
+                .padding(.vertical, 2)
+
             Text("Ingredients:")
                     .font(.headline)
+                    .padding(.top)
             ForEach(ingredients, id: \.self){
                 item in Text(" . \(item)")
                     
             }
-            .padding(.vertical, 4)
+            .padding(.vertical, 2)
+            
             
             Text("Steps:")
                        .font(.headline)
@@ -42,21 +46,19 @@ struct RecipeInfo: View {
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            .padding(.vertical, 4)
+            .padding(.vertical, 2)
+            
+           
    
             
         }
-        .padding(.horizontal,8)
-        .padding(.vertical,16)
-        .background(Color(.systemGray6))
-        .cornerRadius(12)
-        .padding(.horizontal,8)
+        .padding()
     }
 }
 
 #Preview {
     RecipeInfo(
-        title: "Quick and Easy Pizza Dough",
+//        title: "Quick and Easy Pizza Dough",
         ingredients: [
             "Pizza dough",
             "Tomato sauce",

@@ -11,11 +11,9 @@ import Foundation
 struct Recipe: Identifiable {
     let id = UUID()
     var title: String
+    var imageURL: String
+    var rating: Double
     var description: String
     var ingredients:[String]
-    var rating: Double
     var steps:[String]
-    var imageURL: String
-    
-    
 }
