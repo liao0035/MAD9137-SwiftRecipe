@@ -60,13 +60,17 @@ struct Navigation: View {
                                 )
                         ) {
                             RecipeItemView(recipe: recipe)
+                                //  Long press to delete
                                 .contextMenu {
                                     Button(role: .destructive) {
                                         deleteRecipeName = recipe.title
                                         recipeManager.deleteRecipe(recipe)
                                         showDeleteAlert = true
                                     } label: {
-                                        Label("Delete", systemImage: "trash")
+                                        Label(
+                                            "Delete",
+                                            systemImage: "trash"
+                                        )
                                     }
                                 }
                         }

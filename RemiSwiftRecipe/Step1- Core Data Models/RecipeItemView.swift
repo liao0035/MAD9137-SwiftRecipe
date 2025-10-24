@@ -30,7 +30,7 @@ struct RecipeItemView: View {
                             // recipe title and difficulty rate on top of img
                             VStack(alignment: .leading, spacing: 6) {
                                 Text(recipe.title)
-                                    .font(.title2).fontWeight(.semibold)
+                                    .font(.title).fontWeight(.semibold)
                                     .foregroundColor(.white)
                                     .lineLimit(2)
 
@@ -63,11 +63,10 @@ struct RecipeItemView: View {
                     .shadow(color: .black.opacity(0.7), radius: 4, x: 4, y: 8)
 
             } placeholder: {
-
                 VStack {
                     ZStack {
                         Rectangle()
-                            .aspectRatio(4 / 3, contentMode: .fit)
+                            .aspectRatio(3 / 4, contentMode: .fit)
                             .foregroundColor(.gray.opacity(0.2))
                             .cornerRadius(16)
 
