@@ -46,10 +46,11 @@ struct Navigation: View {
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                 }
-                .padding(10)
+                .padding(8)
                 .background(Color(.systemGray6))
-                .cornerRadius(12)
-                .padding([.horizontal, .top])
+                .cornerRadius(16)
+                .padding(.horizontal,16)
+                .padding(.vertical,8)
 
                 ScrollView {
                     ForEach(visibleRecipes) { recipe in
