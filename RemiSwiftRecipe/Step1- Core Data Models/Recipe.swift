@@ -12,7 +12,7 @@ struct Recipe: Identifiable {
     let id = UUID()
     var title: String
     var imageURL: String
-    var rating: Double
+    var difficulty: Double
     var description: String
     var ingredients:[String]
     var steps:[String]

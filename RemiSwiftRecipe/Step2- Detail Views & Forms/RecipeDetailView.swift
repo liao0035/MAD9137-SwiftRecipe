@@ -1,5 +1,5 @@
 //
-//  RecipeDetialView.swift
+//  RecipeDetailView.swift
 //  RemiSwiftRecipe
 //
 //  Created by Remi Liao on 2025/10/21.
@@ -7,10 +7,10 @@
 
 import SwiftUI
 
-struct RecipeDetialView: View {
+struct RecipeDetailView: View {
     
     let recipe: Recipe
-    let reciperManager: RecipeManager
+    let recipeManager: RecipeManager
     
     @State private var showingEditRecipe = false
     
@@ -28,18 +28,27 @@ struct RecipeDetialView: View {
                             .clipped()
                         
                     }placeholder: {
-                        //                    Rectangle()
+                        ZStack {
+                            Rectangle()
+                                .aspectRatio(4 / 3, contentMode: .fit)
+                                .foregroundColor(.gray.opacity(0.2))
+                                .cornerRadius(16)
+
+                            Text("No image")
+                                .font(.headline)
+                                .foregroundColor(.secondary)
+                        }
                     }
-//
                     
                     
                     HStack {
-                        Image(systemName: "star.fill")
+                        Image(systemName: "gauge.open.with.lines.needle.33percent")
                             .foregroundColor(.yellow)
-                        Text(String(format: "%.1f / 5.0", recipe.rating))
+                        Text(String(format: "%.1f / 5.0", recipe.difficulty))
                             .font(.subheadline)
                             .foregroundColor(.gray)
                     }
+                    .padding(.vertical,4)
                     
                 }
                 .padding()
@@ -59,7 +68,7 @@ struct RecipeDetialView: View {
                     showingEditRecipe = true // Set state to show edit sheet
                 }
             }
-            //add edit recipe view
+            
            
         }
         
@@ -71,9 +80,9 @@ struct RecipeDetialView: View {
 #Preview {
     let manager = RecipeManager()
     return NavigationStack {
-        RecipeDetialView(
+        RecipeDetailView(
             recipe: manager.recipes.first!,
-            reciperManager: manager
+            recipeManager: manager
         )
     }
 }

@@ -12,7 +12,7 @@ struct RecipeFormContent: View {
 
     @Binding var title: String
     @Binding var imageURL: String
-    @Binding var rating: Double
+    @Binding var difficulty: Double
     @Binding var description: String
     @Binding var ingredients: [String]
     @Binding var steps: [String]
@@ -20,6 +20,7 @@ struct RecipeFormContent: View {
     let recipeManager: RecipeManager
     let onAddRecipe: () -> Void
     let submitButtonText: String
+    
 
     var body: some View {
         Form {
@@ -32,13 +33,16 @@ struct RecipeFormContent: View {
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
             }
-            //                MARK: - Rating
+            //                MARK: - Difficulty
             Section("Easy to make") {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text("Rating: \(rating, specifier: "%.1f")/5.0 ")
+                    let display = (difficulty * 2).rounded() / 2
+                    Text("Difficulty: \(display, specifier: "%.1f") / 5.0")
                         .font(.headline)
 
-                    Slider(value: $rating, in: 1.0...5.0, step: 0.1)
+                    
+                    Slider(value: $difficulty, in: 1.0...5.0, step: 0.5)
+                    
 
                     HStack {  // Horizontal stack for min/max labels
                         Text("1.0 - Easy")  // Minimum rating explanation
@@ -119,14 +123,14 @@ struct RecipeFormContent: View {
     }
     
     var isFormValid: Bool {
-        !title.isEmpty && !imageURL.isEmpty && !rating.isNaN && !description.isEmpty && !ingredients.isEmpty && !steps.isEmpty
+        !title.isEmpty && !imageURL.isEmpty && !difficulty.isNaN && !description.isEmpty && !ingredients.isEmpty && !steps.isEmpty
     }
 
     func addRecipe() {
         recipeManager.addRecipe(
             title: title,
             imageURL: imageURL,
-            rating: rating,
+            difficulty: difficulty,
             description: description,
             ingredients: ingredients,
             steps: steps,
@@ -139,12 +143,13 @@ struct RecipeFormContent: View {
 // MARK: - Receive data from form
 struct AddRecipeView: View {
     let recipeManager: RecipeManager
+   
 
     @Environment(\.dismiss) private var dismiss
 
     @State private var title = ""
     @State private var imageURL = ""
-    @State private var rating = 5.0
+    @State private var difficulty = 5.0
     @State private var description = ""
     @State private var ingredients = [""]
     @State private var steps = [""]
@@ -155,7 +160,7 @@ struct AddRecipeView: View {
             RecipeFormContent(
                 title: $title,
                 imageURL: $imageURL,
-                rating: $rating,
+                difficulty: $difficulty,
                 description: $description,
                 ingredients: $ingredients,
                 steps: $steps,

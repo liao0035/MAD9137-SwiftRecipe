@@ -11,101 +11,112 @@ struct EditRecipeView: View {
     let recipe: Recipe
     let recipeManager: RecipeManager
     
-    @Environment(\.dismiss) private var dismiss
     
+    
+    @Environment(\.dismiss) private var dismiss
+
     @State private var title = ""
     @State private var imageURL = ""
-    @State private var rating = 5.0
+    @State private var difficulty = 5.0
     @State private var description = ""
     @State private var ingredients = [""]
-    @State private var steps =  [""]
+    @State private var steps = [""]
     
-    
-    
+
     var body: some View {
-        NavigationView{
-            Form{
+        NavigationView {
+            Form {
                 //                MARK: - Title && imageURL
-                Section ("Cuision Information"){
+                Section("Cuision Information") {
                     TextField("Cuisine Name", text: $title)
-                    
-                    TextField("Image URL", text: $imageURL) // Bound to imageURL state (pre-populated)
-                        .textContentType(.URL) // Hint for URL input
-                        .autocapitalization(.none) // Disable auto-capitalization for URLs
-                        .disableAutocorrection(true) // Disable auto-correction for URLs
+
+                    TextField("Image URL", text: $imageURL)  // Bound to imageURL state (pre-populated)
+                        .textContentType(.URL)  // Hint for URL input
+                        .autocapitalization(.none)  // Disable auto-capitalization for URLs
+                        .disableAutocorrection(true)  // Disable auto-correction for URLs
                 }
-                //                MARK: - Rating
-                Section("Easy to make"){
-                    VStack(alignment: .leading, spacing: 8){
-                        Text("Rating: \(rating, specifier: "%.1f")/5.0 ")
+                //                MARK: - Difficulty
+                Section("Easy to make") {
+                    VStack(alignment: .leading, spacing: 8) {
+                        
+                        let display = (difficulty * 2).rounded() / 2
+                        Text("Difficulty: \(display, specifier: "%.1f") / 5.0")
                             .font(.headline)
-                        
-                        Slider(value:$rating, in: 1.0...5.0, step:0.1)
-                        
-                        HStack { // Horizontal stack for min/max labels
-                            Text("1.0 - Easy") // Minimum rating explanation
-                                .font(.caption) // Small font size
-                                .foregroundColor(.secondary) // Gray color for subtlety
-                            Spacer() // Flexible space between labels
-                            Text("5.0 - Difficult") // Maximum rating explanation
-                                .font(.caption) // Small font size
-                                .foregroundColor(.secondary) // Gray color for subtlety
-                        }//END HStack
-                    }// End VStack
-                }//end rating
-                
+
+                        Slider(value: $difficulty, in: 1.0...5.0, step: 0.5)
+
+                        HStack {  // Horizontal stack for min/max labels
+                            Text("1.0 - Easy")  // Minimum difficulty explanation
+                                .font(.caption)  // Small font size
+                                .foregroundColor(.secondary)  // Gray color for subtlety
+                            Spacer()  // Flexible space between labels
+                            Text("5.0 - Difficult")  // Maximum difficulty explanation
+                                .font(.caption)  // Small font size
+                                .foregroundColor(.secondary)  // Gray color for subtlety
+                        }  //END HStack
+                    }  // End VStack
+                }  //end difficulty
+
                 //                MARK: - Description
-                Section("Description"){
-                    TextField("Short Description", text: $description,axis: .vertical)
-                        .lineLimit(3, reservesSpace: true)
+                Section("Description") {
+                    TextField(
+                        "Short Description",
+                        text: $description,
+                        axis: .vertical
+                    )
+                    .lineLimit(3, reservesSpace: true)
                 }
-                
+
                 //                MARK: - Ingredients
-                Section("Ingredients"){
-                    ForEach(ingredients.indices,id:\.self){i in
-                        HStack{
-                            TextField("Ingredient \(i+1)", text: $ingredients[i])
+                Section("Ingredients") {
+                    ForEach(ingredients.indices, id: \.self) { i in
+                        HStack {
+                            TextField(
+                                "Ingredient \(i+1)",
+                                text: $ingredients[i]
+                            )
                             if ingredients.count > 1 {
-                                Button(role: .destructive){
+                                Button(role: .destructive) {
                                     ingredients.remove(at: i)
-                                }label:{ Image(systemName: "minus.circle.fill")}
+                                } label: {
+                                    Image(systemName: "minus.circle.fill")
+                                }
                             }
                         }
                     }
-                    Button{
+                    Button {
                         ingredients.append("")
                     } label: {
                         Label("Add Ingredient", systemImage: "plus.circle.fill")
                     }
                 }
-                
+
                 //                MARK: - Steps
-                Section("Steps"){
-                    ForEach(steps.indices,id:\.self){i in
-                        HStack{
+                Section("Steps") {
+                    ForEach(steps.indices, id: \.self) { i in
+                        HStack {
                             TextField("Step \(i+1)", text: $steps[i])
                             if steps.count > 1 {
-                                Button(role: .destructive){
+                                Button(role: .destructive) {
                                     steps.remove(at: i)
-                                }label:{ Image(systemName: "minus.circle.fill")}
+                                } label: {
+                                    Image(systemName: "minus.circle.fill")
+                                }
                             }
                         }
-                        
+
                     }
-                    Button{
+                    Button {
                         steps.append("")
                     } label: {
                         Label("Add Step", systemImage: "plus.circle.fill")
                     }
                 }
-                
-                
-                
-                
-            }//END FORM1
-            .navigationTitle("Edit Recipe") // Set navigation bar title
-            .navigationBarTitleDisplayMode(.inline) // Use compact title style
-            .toolbar { // Add toolbar items to navigation bar
+
+            }  //END FORM1
+            .navigationTitle("Edit Recipe")  // Set navigation bar title
+            .navigationBarTitleDisplayMode(.inline)  // Use compact title style
+            .toolbar {  // Add toolbar items to navigation bar
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
                 }
@@ -115,18 +126,23 @@ struct EditRecipeView: View {
                         // recipeManager.updateRecipe(...)
                         dismiss()
                     }
-                    .disabled(title.isEmpty || ingredients.allSatisfy { $0.trimmingCharacters(in: .whitespaces).isEmpty })
+                    .disabled(
+                        title.isEmpty
+                            || ingredients.allSatisfy {
+                                $0.trimmingCharacters(in: .whitespaces).isEmpty
+                            }
+                    )
                 }
             }
         }
-                .onAppear {
-                            title = recipe.title
-                            imageURL = recipe.imageURL
-                            rating = recipe.rating
-                            description = recipe.description
-                            ingredients = recipe.ingredients.isEmpty ? [""] : recipe.ingredients
-                            steps = recipe.steps.isEmpty ? [""] : recipe.steps
-                }
+        .onAppear {
+            title = recipe.title
+            imageURL = recipe.imageURL
+            difficulty = recipe.difficulty
+            description = recipe.description
+            ingredients = recipe.ingredients.isEmpty ? [""] : recipe.ingredients
+            steps = recipe.steps.isEmpty ? [""] : recipe.steps
+        }
     }
 }
 
@@ -135,6 +151,5 @@ struct EditRecipeView: View {
     let sample = manager.recipes[0]
 
     EditRecipeView(recipe: sample, recipeManager: manager)
-    
-    
+
 }

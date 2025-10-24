@@ -41,17 +41,28 @@ struct RecipeItemView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 HStack {
-                    Image(systemName: "star.fill")
+                    Image(systemName: "gauge.open.with.lines.needle.33percent")
                         .foregroundColor(.yellow)
-                    Text(String(format: "%.1f / 5.0", recipe.rating))
+                    Text(String(format: "%.1f / 5.0", recipe.difficulty))
                         .font(.subheadline)
                         .foregroundColor(.gray)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.right") // System chevron pointing right
+                        .foregroundColor(.secondary) // Gray color to be subtle
+                        .font(.caption)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.vertical,4)
+                
+               
 
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
+            
+            
 
         }
         .overlay(
