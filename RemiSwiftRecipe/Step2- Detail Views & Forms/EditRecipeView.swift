@@ -10,9 +10,7 @@ import SwiftUI
 struct EditRecipeView: View {
     let recipe: Recipe
     let recipeManager: RecipeManager
-    
-    
-    
+
     @Environment(\.dismiss) private var dismiss
 
     @State private var title = ""
@@ -21,9 +19,9 @@ struct EditRecipeView: View {
     @State private var description = ""
     @State private var ingredients = [""]
     @State private var steps = [""]
-    
 
     var body: some View {
+        
         NavigationView {
             Form {
                 //                MARK: - Title && imageURL
@@ -38,7 +36,7 @@ struct EditRecipeView: View {
                 //                MARK: - Difficulty
                 Section("Easy to make") {
                     VStack(alignment: .leading, spacing: 8) {
-                        
+
                         let display = (difficulty * 2).rounded() / 2
                         Text("Difficulty: \(display, specifier: "%.1f") / 5.0")
                             .font(.headline)
@@ -123,7 +121,15 @@ struct EditRecipeView: View {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         // 這裡可呼叫 recipeManager 更新
-                        // recipeManager.updateRecipe(...)
+                        recipeManager.updateRecipe(
+                            recipe,
+                            newTitle: title,
+                            newImageURL: imageURL,
+                            newDifficulty: difficulty,
+                            newDescription: description,
+                            newIngredients: ingredients,
+                            newSteps: steps
+                        )
                         dismiss()
                     }
                     .disabled(

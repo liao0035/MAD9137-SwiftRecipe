@@ -10,17 +10,18 @@ import SwiftUI
 struct RecipeDetailView: View {
     
     let recipe: Recipe
-    let recipeManager: RecipeManager
+//    let recipeManager: RecipeManager
+    @ObservedObject var recipeManager: RecipeManager
     
     @State private var showingEditRecipe = false
     
     var body: some View {
-        
+        let current = recipeManager.recipes.first(where: { $0.id == recipe.id }) ?? recipe
         ScrollView{
             
             VStack{
                 VStack(alignment: .leading){
-                    AsyncImage(url: URL(string:recipe.imageURL)){ img in
+                    AsyncImage(url: URL(string:current.imageURL)){ img in
                         img
                             .resizable()
                             .aspectRatio(contentMode: .fill)
@@ -44,9 +45,11 @@ struct RecipeDetailView: View {
                     HStack {
                         Image(systemName: "gauge.open.with.lines.needle.33percent")
                             .foregroundColor(.yellow)
-                        Text(String(format: "%.1f / 5.0", recipe.difficulty))
-                            .font(.subheadline)
-                            .foregroundColor(.gray)
+                        
+                        let display = (current.difficulty * 2).rounded() / 2
+                        Text("Difficulty: \(display, specifier: "%.1f") / 5.0")
+                            .font(.headline)
+                        
                     }
                     .padding(.vertical,4)
                     
@@ -55,11 +58,11 @@ struct RecipeDetailView: View {
             }
             
             VStack{
-                RecipeInfo(ingredients: recipe.ingredients, steps:recipe.steps, description: recipe.description)
+                RecipeInfo(ingredients: current.ingredients, steps:current.steps, description: current.description)
             }
 //            .border(.gray,width: 2)
         }
-        .navigationBarTitle(recipe.title)
+        .navigationBarTitle(current.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { // Add toolbar items to navigation bar
             // STEP 49: Add edit button to navigation bar
@@ -70,6 +73,8 @@ struct RecipeDetailView: View {
             }
             
            
+        }.sheet(isPresented: $showingEditRecipe){
+            EditRecipeView(recipe:current, recipeManager: recipeManager)
         }
         
     }
