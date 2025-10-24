@@ -34,7 +34,6 @@ struct Navigation: View {
     var body: some View {
         NavigationView {
             VStack {
-                // ✅ 搜尋列放在最上方
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.gray)
@@ -42,15 +41,14 @@ struct Navigation: View {
                         "Search recipes",
                         text: $searchQuery
                     )
-                    .textFieldStyle(.plain)
                     .autocapitalization(.none)
                     .disableAutocorrection(true)
                 }
                 .padding(8)
                 .background(Color(.systemGray6))
                 .cornerRadius(16)
-                .padding(.horizontal,16)
-                .padding(.vertical,8)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 8)
 
                 ScrollView {
                     ForEach(visibleRecipes) { recipe in

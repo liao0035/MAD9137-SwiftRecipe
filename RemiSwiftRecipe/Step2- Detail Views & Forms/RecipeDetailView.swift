@@ -61,6 +61,8 @@ struct RecipeDetailView: View {
                 RecipeInfo(ingredients: current.ingredients, steps:current.steps, description: current.description)
             }
 //            .border(.gray,width: 2)
+            
+            
         }
         .navigationBarTitle(current.title)
         .navigationBarTitleDisplayMode(.inline)
