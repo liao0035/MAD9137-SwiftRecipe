@@ -13,8 +13,8 @@ class RecipeManager: ObservableObject {
     @Published var recipes: [Recipe] = [
         Recipe(
             title: "Quick and Easy Pizza Dough",
-            //            imageURL:"https://cdn.dummyjson.com/recipe-images/1.webp",
-            imageURL: "",
+                        imageURL:"https://cdn.dummyjson.com/recipe-images/1.webp",
+//            imageURL: "",
             difficulty: 3,
             description: "An amazing recipe for a quick pizza dough",
             ingredients: [

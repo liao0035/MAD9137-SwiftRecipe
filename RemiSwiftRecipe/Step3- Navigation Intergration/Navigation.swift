@@ -12,6 +12,8 @@ import SwiftUI
 struct Navigation: View {
     @EnvironmentObject var recipeManager: RecipeManager
 
+    @State private var searchQuery = ""
+
     @State private var showAddNewRecipe = false
 
     //    Create state variables for alerts
@@ -21,32 +23,60 @@ struct Navigation: View {
     @State private var deleteRecipeName: String = ""
     @State private var recipeCountBeforeAdd = 0
 
+    private var visibleRecipes: [Recipe] {
+        if searchQuery.isEmpty {
+            return recipeManager.recipes
+        } else {
+            return recipeManager.filtered(by: searchQuery)
+        }
+    }
+
     var body: some View {
         NavigationView {
-            ScrollView {
-                ForEach(recipeManager.recipes) { recipe in
-                    NavigationLink(
-                        destination:
-                            RecipeDetailView(
-                                recipe: recipe,
-                                recipeManager: recipeManager
-                            )
-                    ) {
-                        RecipeItemView(recipe: recipe)
-                            .contextMenu {
-                                Button(role: .destructive) {
-                                    deleteRecipeName = recipe.title
-                                    recipeManager.deleteRecipe(recipe)
-                                    showDeleteAlert = true
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
-                                }
-                            }
-                    }
-                    .buttonStyle(.plain)
+            VStack {
+                // ✅ 搜尋列放在最上方
+                HStack {
+                    Image(systemName: "magnifyingglass")
+                        .foregroundColor(.gray)
+                    TextField(
+                        "Search recipes",
+                        text: $searchQuery
+                    )
+                    .textFieldStyle(.plain)
+                    .autocapitalization(.none)
+                    .disableAutocorrection(true)
+                }
+                .padding(10)
+                .background(Color(.systemGray6))
+                .cornerRadius(12)
+                .padding([.horizontal, .top])
 
+                ScrollView {
+                    ForEach(visibleRecipes) { recipe in
+                        NavigationLink(
+                            destination:
+                                RecipeDetailView(
+                                    recipe: recipe,
+                                    recipeManager: recipeManager
+                                )
+                        ) {
+                            RecipeItemView(recipe: recipe)
+                                .contextMenu {
+                                    Button(role: .destructive) {
+                                        deleteRecipeName = recipe.title
+                                        recipeManager.deleteRecipe(recipe)
+                                        showDeleteAlert = true
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
+                                    }
+                                }
+                        }
+                        .buttonStyle(.plain)
+
+                    }
                 }
             }
+
             .navigationTitle("Recipes")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -73,14 +103,14 @@ struct Navigation: View {
             ) {
                 AddRecipeView(recipeManager: recipeManager)
             }
-            .alert("Recipe Added", isPresented: $showAddAlert){
-                Button("OK"){}
-            }message:{
+            .alert("Recipe Added", isPresented: $showAddAlert) {
+                Button("OK") {}
+            } message: {
                 Text("\(addRecipeName) has been added")
             }
-            .alert("Recipe Deleted", isPresented: $showDeleteAlert){
-                Button("OK"){}
-            }message:{
+            .alert("Recipe Deleted", isPresented: $showDeleteAlert) {
+                Button("OK") {}
+            } message: {
                 Text("\(deleteRecipeName) has been deleted")
             }
         }
