@@ -19,10 +19,11 @@ struct Navigation: View {
     @State private var showDeleteAlert: Bool = false
     @State private var addRecipeName: String = ""
     @State private var deleteRecipeName: String = ""
+    @State private var recipeCountBeforeAdd = 0
 
     var body: some View {
         NavigationView {
-           ScrollView {
+            ScrollView {
                 ForEach(recipeManager.recipes) { recipe in
                     NavigationLink(
                         destination:
@@ -33,9 +34,11 @@ struct Navigation: View {
                     ) {
                         RecipeItemView(recipe: recipe)
                             .contextMenu {
-                                Button(role: .destructive){
+                                Button(role: .destructive) {
+                                    deleteRecipeName = recipe.title
                                     recipeManager.deleteRecipe(recipe)
-                                } label:{
+                                    showDeleteAlert = true
+                                } label: {
                                     Label("Delete", systemImage: "trash")
                                 }
                             }
@@ -44,8 +47,42 @@ struct Navigation: View {
 
                 }
             }
-           .navigationTitle("Recipes")
-           .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("Recipes")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        recipeCountBeforeAdd = recipeManager.recipes.count
+                        showAddNewRecipe = true
+
+                    }) {
+                        Image(systemName: "plus")
+                    }
+                }
+            }
+            .sheet(
+                isPresented: $showAddNewRecipe,
+                onDismiss: {
+                    if recipeManager.recipes.count > recipeCountBeforeAdd {
+                        if let lastRecipe = recipeManager.recipes.last {
+                            addRecipeName = lastRecipe.title
+                            showAddAlert = true
+                        }
+                    }
+                }
+            ) {
+                AddRecipeView(recipeManager: recipeManager)
+            }
+            .alert("Recipe Added", isPresented: $showAddAlert){
+                Button("OK"){}
+            }message:{
+                Text("\(addRecipeName) has been added")
+            }
+            .alert("Recipe Deleted", isPresented: $showDeleteAlert){
+                Button("OK"){}
+            }message:{
+                Text("\(deleteRecipeName) has been deleted")
+            }
         }
     }
 }
